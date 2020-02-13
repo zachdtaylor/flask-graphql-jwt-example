@@ -92,15 +92,6 @@ def requires_scope(required_scope):
         for token_scope in token_scopes:
           if token_scope == required_scope:
             return f(*args, **kwargs)
-      return GraphQLError("Access denied: field "+_get_field_name(f)+" requires scope "+required_scope)
+      return GraphQLError("Access denied: field requires scope "+required_scope)
     return wrapper
   return decorator
-
-def _get_field_name(f):
-  field = ''
-  if f.__name__.startswith('resolve'):
-    field = f.__name__.split('_')[1]
-  elif f.__name__ == 'mutate':
-    field = f.__qualname__.split('.')[0]
-    field = field[0].lower() + field[1:]
-  return field
