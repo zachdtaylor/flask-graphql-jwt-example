@@ -19,8 +19,8 @@ class Query(graphene.ObjectType):
   def resolve_goodbye(root, info):
     return 'See ya!'
 
-  @requires_auth
   @requires_scope('read:cities')
+  @requires_auth
   def resolve_cities(root, info):
     return cities
 
@@ -30,9 +30,9 @@ class AddCity(graphene.Mutation):
   
   ok = Boolean()
   city = String()
-
-  @requires_auth
+  
   @requires_scope('create:cities')
+  @requires_auth
   def mutate(root, info, name):
     cities.append(name)
     return AddCity(ok=True, city=name)
