@@ -75,4 +75,29 @@ def requires_auth(f):
       return f(*args, **kwargs)
     raise GraphQLError("Unable to find appropriate key")
   return decorated
-    
+
+def requires_scope(required_scope):
+  """Determines if the required scope is present in the Access Token
+  
+  Parameters:
+    required_scope (str): The scope required to access the resource
+  """
+  def decorator(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+      token = get_token_auth_header()
+      unverified_claims = jwt.get_unverified_claims(token)
+      if unverified_claims.get("scope"):
+        token_scopes = unverified_claims["scope"].split()
+        for token_scope in token_scopes:
+          if token_scope == required_scope:
+            return f(*args, **kwargs)
+      field = ''
+      if f.__name__.startswith('resolve'):
+        field = f.__name__.split('_')[1]
+      elif f.__name__ == 'mutate':
+        field = f.__qualname__.split('.')[0]
+        field = field[0].lower() + field[1:]
+      return GraphQLError("Access denied: field "+field+" requires scope "+required_scope)
+    return wrapper
+  return decorator

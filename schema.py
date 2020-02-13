@@ -6,7 +6,7 @@ from graphene import (
 )
 import graphene
 from data import cities
-from auth import requires_auth
+from auth import requires_auth, requires_scope
 
 class Query(graphene.ObjectType):
   hello = String(name=String(default_value="stranger"))
@@ -20,6 +20,7 @@ class Query(graphene.ObjectType):
     return 'See ya!'
 
   @requires_auth
+  @requires_scope('read:cities')
   def resolve_cities(root, info):
     return cities
 
@@ -30,6 +31,8 @@ class AddCity(graphene.Mutation):
   ok = Boolean()
   city = String()
 
+  @requires_auth
+  @requires_scope('create:cities')
   def mutate(root, info, name):
     cities.append(name)
     return AddCity(ok=True, city=name)
