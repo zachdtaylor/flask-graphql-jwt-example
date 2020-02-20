@@ -19,7 +19,6 @@ class Query(graphene.ObjectType):
   def resolve_goodbye(root, info):
     return 'See ya!'
 
-  @requires_scope('read:cities')
   @requires_auth
   def resolve_cities(root, info):
     return cities
