@@ -30,7 +30,7 @@ class AddCity(graphene.Mutation):
   
   ok = Boolean()
   city = String()
-  
+
   @requires_scope('create:cities')
   @requires_auth
   def mutate(root, info, name):

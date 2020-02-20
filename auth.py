@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import request, _request_ctx_stack
 from functools import wraps
@@ -6,8 +7,8 @@ from graphql import GraphQLError
 from jose import jwt
 from six.moves.urllib.request import urlopen
 
-AUTH0_DOMAIN = 'dev-xy2tjdsq.auth0.com'
-API_AUDIENCE = 'https://jwttest/api'
+AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN'] 
+API_AUDIENCE = os.environ['API_AUDIENCE']
 ALGORITHMS = ['RS256']
 
 def get_token_auth_header():
