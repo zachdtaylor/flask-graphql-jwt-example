@@ -1,6 +1,7 @@
 from flask import Flask, jsonify 
 from flask_graphql import GraphQLView
 from schema import schema
+from models import init_db
 
 app = Flask(__name__)
 
@@ -11,4 +12,5 @@ app.add_url_rule(
 )
 
 if __name__ == '__main__':
+  init_db()
   app.run(host='0.0.0.0', debug=True)
