@@ -18,7 +18,7 @@ promise==2.3
 pyasn1==0.4.8
 pymongo==3.10.1
 python-jose==3.1.0
-rsa==4.0
+rsa==4.7
 Rx==1.6.1
 singledispatch==3.4.0.3
 six==1.14.0
